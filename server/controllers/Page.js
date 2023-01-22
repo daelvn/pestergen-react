@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 // id: String -> user-choice OR nanoid of 9 characters
 // title: String
 // date: Date
+// password: String -> allow for editing later
 // next: [ -> Array of links
 //   {
 //     text: String -> Text to the next page
@@ -35,6 +36,8 @@ const PageSchema = new Schema({
   title: String,
   // date : Date
   date: { type: Date, default: Date.now },
+  // password : String
+  password: String,
   // next : [{text: String, id: String}]
   next: [{ text: String, id: String }],
   // panel : {uri: String, kind: String}
