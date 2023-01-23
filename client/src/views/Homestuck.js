@@ -1,5 +1,5 @@
 import "./manifest-ui/manifestui.css";
-import "./manifest-ui/manifestui";
+//import "./manifest-ui/manifestui";
 import HomestuckFooter from "../components/HomestuckFooter";
 import HomestuckHeader from "../components/HomestuckHeader";
 import HomestuckNav from "../components/HomestuckNav";
