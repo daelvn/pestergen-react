@@ -1,0 +1,22 @@
+{
+  "name": "pestergen-react",
+  "description": "Pastebin for Homestuck logs",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daelvn/pestergen-react.git"
+  },
+  "keywords": [
+    "webapp"
+  ],
+  "author": "daelvn",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/daelvn/pestergen-react/issues"
+  },
+  "homepage": "https://github.com/daelvn/pestergen-react#readme"
+}
