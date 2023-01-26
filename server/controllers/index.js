@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const { Page } = require("./Page");
 
 // Access URI
-const MONGODB_ACCESS_PASSWORD = process.env.MONGODB_ACCESS_PASSWORD;
-const MONGODB_URI = `mongodb+srv://daelvn:${MONGODB_ACCESS_PASSWORD}@cluster0.tbmc2ai.mongodb.net/pestergen?retryWrites=true&w=majority`;
+const MONGODB_CREDENTIALS = process.env.MONGODB_CREDENTIALS;
+const MONGODB_URI = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.tbmc2ai.mongodb.net/pestergen?retryWrites=true&w=majority`;
 
 // Deprecation warning for strictQuery
 mongoose.set("strictQuery", false);

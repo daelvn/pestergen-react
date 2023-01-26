@@ -2,8 +2,12 @@ var express = require("express");
 var multer = require("multer");
 var router = express.Router();
 
-// Import controller
+// Import nanoid
+const { nanoid } = require("nanoid");
+
+// Import controllers
 const { initialSetup } = require("../controllers");
+const { Page } = require("../controllers/Page");
 
 // Create multer uploader
 const storage = multer.diskStorage({
@@ -36,7 +40,16 @@ router.post("/init", function (req, res, next) {
 //   next     : Array of links
 //   panel    : Image
 router.post("/create", upload.single("panel"), function (req, res, next) {
+  console.log("UPLOAD:");
+  console.log(req.file);
   // TODO create panel
+  // const page = new Page({
+  //   id: req.body.id != null ? String(req.body.id) : nanoid(9),
+  //   title: req.body.title,
+  //   password: req.body.password,
+  //   next: req.body.next,
+  //   panel: null
+  // });
   res.send({ id: "1" });
 });
 
