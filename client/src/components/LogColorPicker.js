@@ -95,6 +95,7 @@ export default class LogColorPicker extends React.Component {
 
   handleChange = (color) => {
     console.log(`handling color! ${color}`);
+    this.props.handleChange({ target: { name: "color", value: color } });
     this.setState({ color: color.rgb });
   };
 
