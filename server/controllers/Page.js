@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 // title: String
 // date: Date
 // password: String -> allow for editing later
+// log: String -> JSON of the log
 // next: [ -> Array of links
 //   {
 //     text: String -> Text to the next page
@@ -38,6 +39,8 @@ const PageSchema = new Schema({
   date: { type: Date, default: Date.now },
   // password : String
   password: String,
+  // log : String
+  log: String,
   // next : [{text: String, id: String}]
   next: [{ text: String, id: String }],
   // panel : {uri: String, kind: String}
