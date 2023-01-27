@@ -49,7 +49,7 @@ export default function Create() {
           <Typography level="h4">
             <b>Create a Pesterlog</b>
           </Typography>
-          <FormControl>
+          <form>
             <Grid container spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
               <Grid xs={6}>
                 <Panel />
@@ -59,16 +59,22 @@ export default function Create() {
               </Grid>
               <Grid xs={6}>
                 <div style={styles.inputs}>
-                  <FormLabel>Title</FormLabel>
-                  <Input name="title" type="text" placeholder="Title of your page" />
-                  <FormLabel>ID</FormLabel>
-                  <Input name="id" type="text" placeholder="This will be the URL of the page. Leave blank for a random one." />
-                  <FormLabel>Password</FormLabel>
-                  <Input name="password" type="password" placeholder="Set a password if you want to edit this later." />
+                  <FormControl>
+                    <FormLabel>Title</FormLabel>
+                    <Input name="title" type="text" placeholder="Title of your page" />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>ID</FormLabel>
+                    <Input name="id" type="text" placeholder="This will be the URL of the page. Leave blank for a random one." />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Password</FormLabel>
+                    <Input name="password" type="password" placeholder="Set a password if you want to edit this later." />
+                  </FormControl>
                 </div>
               </Grid>
             </Grid>
-          </FormControl>
+          </form>
         </div>
       </Sheet>
     </CssVarsProvider>
