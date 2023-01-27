@@ -17,7 +17,7 @@ function LogInputButton({ handleClick }) {
 export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast, handleDeleteAll }) {
   const [color, setColor] = useState({ r: 255, g: 0, b: 0, a: 1 });
   const [intervention, setIntervention] = useState("");
-  const [interventionType, setInterventionType] = useState("");
+  const [interventionType, setInterventionType] = useState("character");
   const [line, setLine] = useState("");
 
   function handleCreate() {
