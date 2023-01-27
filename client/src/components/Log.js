@@ -39,9 +39,7 @@ function LogHolder({ lines }) {
     console.log(line);
     return (
       <div style={{ color: rgbToHex(line.color.r, line.color.g, line.color.b) }} key={index}>
-        <span style={styles.line}>
-          {line.intervention}: {line.line}
-        </span>
+        <span style={styles.line}>{line.interventionType === "character" ? `${line.intervention}: ${line.line}` : line.line}</span>
         <br />
       </div>
     );
