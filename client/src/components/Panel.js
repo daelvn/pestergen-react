@@ -10,7 +10,7 @@ import "../index.css";
 import { useState } from "react";
 import reactCSS from "reactcss";
 
-export default function Panel() {
+export default function Panel({ formData, setFormData }) {
   const [file, setFile] = useState("/static/img/panel.png");
   const [hover, setHover] = useState(false);
 
@@ -36,6 +36,7 @@ export default function Panel() {
 
   function handleChange(event) {
     setFile(URL.createObjectURL(event.target.files[0]));
+    setFormData({ ...formData, panel: event.target.files[0] });
   }
 
   return (

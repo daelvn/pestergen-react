@@ -31,7 +31,6 @@ export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast,
     if (event.target.nodeName === "LI") {
       setInterventionType(document.querySelectorAll('[name="interventionType"]')[1].value === "narrator" ? "character" : "narrator");
     } else if (event.target.name === "color") {
-      console.log(`change color:`, event.target.value);
       setColor(event.target.value);
     } else if (event.target.name === "intervention") {
       setIntervention(event.target.value);

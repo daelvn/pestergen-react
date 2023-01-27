@@ -36,7 +36,6 @@ function LogHolder({ lines }) {
   });
 
   const spans = lines.map((line, index) => {
-    console.log(line);
     return (
       <div style={{ color: rgbToHex(line.color.r, line.color.g, line.color.b) }} key={index}>
         <span style={styles.line}>{line.interventionType === "character" ? `${line.intervention}: ${line.line}` : line.line}</span>
@@ -54,19 +53,27 @@ function LogHolder({ lines }) {
   return holder;
 }
 
-export default function Log() {
+export default function Log({ formData, setFormData }) {
   const [lines, setLines] = useState([]);
 
   function handleAdd(line) {
     setLines(lines.concat([line]));
+    setFormData({ ...formData, lines: lines.concat([line]) });
   }
 
   function handleDeleteLast() {
     setLines(lines.slice(0, -1));
+    setFormData({ ...formData, lines: lines.slice(0, -1) });
   }
 
   function handleDeleteAll() {
     setLines([]);
+    setFormData({ ...formData, lines: [] });
+  }
+
+  function handleSetLines(lns) {
+    setLines(lns);
+    setFormData({ ...formData, lines: lns });
   }
 
   return (
@@ -74,7 +81,7 @@ export default function Log() {
       <FormLabel>Log</FormLabel>
       <LogHolder lines={lines} />
       <Divider sx={{ margin: 2 }} />
-      <LogInput lines={lines} setLines={setLines} handleAdd={handleAdd} handleDeleteLast={handleDeleteLast} handleDeleteAll={handleDeleteAll} />
+      <LogInput lines={lines} setLines={handleSetLines} handleAdd={handleAdd} handleDeleteLast={handleDeleteLast} handleDeleteAll={handleDeleteAll} />
     </div>
   );
 }
