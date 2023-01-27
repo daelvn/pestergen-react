@@ -46,7 +46,7 @@ export default function Create() {
           <Typography level="h4">
             <b>Create a Pesterlog</b>
           </Typography>
-          <form action="/api/create">
+          <form action="/api/create" method="post" enctype="mutlipart/form-data">
             <Grid container spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
               <Grid xs={6}>
                 <Panel />
