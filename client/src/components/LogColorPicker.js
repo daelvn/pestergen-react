@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import reactCSS from "reactcss";
 import { TwitterPicker } from "react-color";
 import Button from "@mui/joy/Button";
@@ -40,87 +40,60 @@ function findContrast(rgb) {
   return textColour;
 }
 
-class LogColorPickerSwatch extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const styles = reactCSS({
-      default: {
-        popover: {
-          position: "absolute",
-          zIndex: "2",
-        },
-        cover: {
-          position: "fixed",
-          minHeight: "100%",
-          top: "0px",
-          right: "0px",
-          bottom: "0px",
-          left: "0px",
-        },
+function LogColorPickerSwatch({ color, handleChange, handleClose }) {
+  const styles = reactCSS({
+    default: {
+      popover: {
+        position: "absolute",
+        zIndex: "2",
       },
-    });
-    return (
-      <div style={styles.popover}>
-        {/* <div style={styles.cover} onClick={this.props.handleClose} /> */}
-        <TwitterPicker colors={DEFAULT_COLORS} color={this.props.color} onChange={this.props.handleChange} />
-      </div>
-    );
-  }
+      cover: {
+        position: "fixed",
+        minHeight: "100%",
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px",
+      },
+    },
+  });
+  return (
+    <div style={styles.popover}>
+      <div style={styles.cover} onClick={handleClose} />
+      <TwitterPicker colors={DEFAULT_COLORS} color={color} onChange={handleChange} />
+    </div>
+  );
 }
 
-export default class LogColorPicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayColorPicker: false,
-      color: {
-        r: "255",
-        g: "0",
-        b: "0",
-        a: "1",
-      },
-    };
+export default function LogColorPicker({ handleChangeParent }) {
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [color, setColor] = useState({ r: 255, g: 0, b: 0, a: 1 });
+
+  function handleClick() {
+    setDisplayColorPicker(!displayColorPicker);
   }
 
-  handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker });
-  };
-
-  handleClose = () => {
-    //this.setState({ displayColorPicker: false });
-  };
-
-  handleChange = (color) => {
-    console.log(`handling color! ${color}`);
-    this.props.handleChange({ target: { name: "color", value: color } });
-    this.setState({ color: color.rgb });
-  };
-
-  render() {
-    const styles = reactCSS({
-      default: {
-        button: {},
-      },
-    });
-
-    return (
-      <div>
-        <Button
-          sx={{
-            backgroundColor: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`,
-            color: findContrast(this.state.color),
-          }}
-          onClick={this.handleClick}
-        >
-          Pick color
-        </Button>
-        {this.state.displayColorPicker ? (
-          <LogColorPickerSwatch color={this.state.color} handleChange={this.handleChange} handleClose={this.handleClose} />
-        ) : null}
-      </div>
-    );
+  function handleClose() {
+    setDisplayColorPicker(false);
   }
+
+  function handleChange(newColor) {
+    handleChangeParent({ target: { name: "color", value: newColor.rgb } });
+    setColor(newColor.rgb);
+  }
+
+  return (
+    <div>
+      <Button
+        sx={{
+          backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
+          color: findContrast(color),
+        }}
+        onClick={handleClick}
+      >
+        Pick color
+      </Button>
+      {displayColorPicker ? <LogColorPickerSwatch color={color} handleChange={handleChange} handleClose={handleClose} /> : null}
+    </div>
+  );
 }
