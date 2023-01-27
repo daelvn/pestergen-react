@@ -4,8 +4,10 @@ import Grid from "@mui/joy/Grid";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 
-import LogColorPicker from "../components/LogColorPicker";
+import LogColorPicker from "./LogColorPicker";
+import LogExportModal from "./LogExport";
 import React from "react";
+import LogImportModal from "./LogImport";
 
 class LogInputButton extends React.Component {
   render() {
@@ -28,10 +30,15 @@ export default class LogInput extends React.Component {
   handleCreate = () => {
     var line = { ...this.state };
     this.props.handleAdd(line);
+    // reset some
+    let stateClone = { ...this.state };
+    stateClone.line = "";
+    this.setState(stateClone);
+    document.getElementById("log-input-line").value = "";
   };
 
   handleChange = (event) => {
-    var stateClone = { ...this.state };
+    let stateClone = { ...this.state };
     //console.log(event);
     if (event.target.nodeName === "LI") {
       stateClone["interventionType"] = document.querySelectorAll('[name="interventionType"]')[1].value === "narrator" ? "character" : "narrator";
@@ -79,11 +86,10 @@ export default class LogInput extends React.Component {
           </Button>
         </Grid>
         <Grid xs={6}>
-          <Button sx={{ width: "100%" }}>Import</Button>
-          {/* Open textarea to paste JSON */}
+          <LogExportModal lines={this.props.lines} />
         </Grid>
         <Grid xs={6}>
-          <Button sx={{ width: "100%" }}>Export</Button>
+          <LogImportModal setLines={this.props.setLines} />
           {/* Do popup with code to put in a file */}
         </Grid>
       </Grid>

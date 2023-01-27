@@ -86,13 +86,23 @@ export default class Log extends React.Component {
     this.setState({ lines: [] });
   };
 
+  setLines = (lines) => {
+    this.setState({ lines: lines });
+  };
+
   render() {
     return (
       <div>
         <FormLabel>Log</FormLabel>
         <LogHolder lines={this.state.lines} />
         <Divider sx={{ margin: 2 }} />
-        <LogInput handleAdd={this.handleAdd} handleDeleteLast={this.handleDeleteLast} handleDeleteAll={this.handleDeleteAll} />
+        <LogInput
+          lines={this.state.lines}
+          setLines={this.setLines}
+          handleAdd={this.handleAdd}
+          handleDeleteLast={this.handleDeleteLast}
+          handleDeleteAll={this.handleDeleteAll}
+        />
       </div>
     );
   }
