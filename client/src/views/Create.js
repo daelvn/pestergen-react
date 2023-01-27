@@ -1,16 +1,14 @@
 // TODO: create multipart form for uploading
 // TODO: find react UIs
 import { CssVarsProvider } from "@mui/joy/styles";
-import { styled } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Typography from "@mui/joy/Typography";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-import Stack from "@mui/joy/Stack";
+import Button from "@mui/joy/Button";
 import Grid from "@mui/joy/Grid";
-import { Form } from "react-router-dom";
 
 import reactCSS from "reactcss";
 
@@ -70,6 +68,11 @@ export default function Create() {
                   <FormControl>
                     <FormLabel>Password</FormLabel>
                     <Input name="password" type="password" placeholder="Set a password if you want to edit this later." />
+                  </FormControl>
+                  <FormControl>
+                    <Button sx={{ my: 2 }} type="submit">
+                      Create
+                    </Button>
                   </FormControl>
                 </div>
               </Grid>
