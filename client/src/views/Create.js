@@ -35,6 +35,8 @@ export default function Create() {
     Object.keys(formData).forEach((key) => {
       if (key !== "panel") {
         formDataObject.append(key, formData[key]);
+      } else if (key === "lines") {
+        formDataObject.append(key, JSON.stringify(formData[key]));
       }
     });
     formDataObject.append("panel", formData.panel, `${encodeURI(formData.id)}+${encodeURI(formData.title)}`);
