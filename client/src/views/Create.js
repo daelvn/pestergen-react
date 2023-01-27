@@ -1,5 +1,4 @@
 // TODO: create multipart form for uploading
-// TODO: find react UIs
 import { CssVarsProvider } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -47,7 +46,7 @@ export default function Create() {
           <Typography level="h4">
             <b>Create a Pesterlog</b>
           </Typography>
-          <form>
+          <form action="/api/create">
             <Grid container spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
               <Grid xs={6}>
                 <Panel />
