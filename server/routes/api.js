@@ -36,7 +36,7 @@ const upload = multer({ storage: storage });
 router.post("/create", upload.single("panel"), async function (req, res, next) {
   console.log("REQUEST:", req.body);
   //console.log("UPLOAD:", req.file);
-  // TODO create panel
+  // create page
   const page = new Page({
     id: req.body.id != null ? String(req.body.id) : nanoid(9),
     title: req.body.title,
@@ -53,10 +53,20 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
 router.get("/view/:id", async function (req, res, next) {
   let id = req.params.id;
   let page = await Page.findOne({ id }).exec();
+  res.set({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  });
   if (!page) {
     res.send({ error: "Page not found" });
   } else {
-    res.send({ ...page._doc, password: undefined, _id: undefined, __v: undefined });
+    // couple links with titles before sending away
+    let links = [];
+    for (let link of JSON.parse(page._doc.links)) {
+      let found = await Page.findOne({ id: link }).exec();
+      links.push(found ? { id: link, title: found._doc.title } : { id: link, title: `==> ? (${link})` });
+    }
+    res.send({ ...page._doc, links: links, password: undefined, _id: undefined, __v: undefined });
   }
 });
 
