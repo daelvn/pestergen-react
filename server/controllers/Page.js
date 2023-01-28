@@ -39,6 +39,7 @@ const PageSchema = new Schema({
   date: { type: Date, default: Date.now },
   // password : String
   password: String,
+  salt: String,
   // log : String
   log: String,
   // links : String
