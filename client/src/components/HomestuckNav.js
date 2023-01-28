@@ -2,7 +2,7 @@ export default function HomestuckNav({ links }) {
   const linkList = links.map((link, i) => {
     return (
       <div>
-        <a href={`/${link.id}`}>{link.title}</a>
+        <a href={`/view/${link.id}`}>{link.title}</a>
       </div>
     );
   });
