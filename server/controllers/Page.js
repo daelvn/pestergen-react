@@ -41,8 +41,8 @@ const PageSchema = new Schema({
   password: String,
   // log : String
   log: String,
-  // next : [{text: String, id: String}]
-  next: [{ text: String, id: String }],
+  // links : [{text: String, id: String}]
+  links: [{ text: String, id: String }],
   // panel : {uri: String, kind: String}
   panel: { uri: { type: String }, kind: { type: String } },
 });
