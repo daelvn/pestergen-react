@@ -5,6 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
+var mime = require("mime-types");
 
 // Import routers
 var indexRouter = require("./routes/index");
@@ -16,13 +17,23 @@ connect();
 
 var app = express();
 
+// FIXME temporary CORS
+app.use(function (req, res, next) {
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+  });
+  next();
+});
+
+// serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(logger("dev"));
 app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/api", apiRouter);
@@ -39,8 +50,12 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.send({ error: `${err.message} ${res.locals.error}` });
+  if (err.message === "Not Found") {
+    res.redirect("/404");
+  } else {
+    res.status(err.status || 500);
+    res.send({ error: `${err.message} ${res.locals.error}` });
+  }
 });
 
 module.exports = app;
