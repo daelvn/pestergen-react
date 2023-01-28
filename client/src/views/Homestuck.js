@@ -6,18 +6,23 @@ import HomestuckNav from "../components/HomestuckNav";
 import HomestuckGameNav from "../components/HomestuckGameNav";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function Homestuck({ overrideId }) {
   const [panel, setPanel] = useState("");
   const [title, setTitle] = useState("");
   const [log, setLog] = useState([]);
   const [links, setLinks] = useState([]);
+  const [fetched, setFetched] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
+    if (fetched) {
+      return;
+    }
     let localId = id || overrideId;
     console.log("fetching!", localId);
-    let req = fetch(`http://localhost:5000/api/view/${localId}`, { method: "GET", mode: "no-cors" });
+    let req = fetch(`http://localhost:5000/api/view/${localId}`, { method: "GET" });
     req
       .then((res) => res.json())
       .then((json) => {
@@ -26,20 +31,23 @@ export default function Homestuck({ overrideId }) {
         }
         setTitle(json.title);
         setPanel(json.panel.uri);
-        setLog(JSON.decode(json.log));
-        setLinks(JSON.decode(json.links));
+        setLog(JSON.parse(json.log));
+        setLinks(JSON.parse(json.links));
+        setFetched(true);
       });
   });
 
   return (
     <div id="homestuck">
-      <link rel="stylesheet" type="text/css" href="./manifest-ui/manifestui.css" />
-      <script src="./manifest-ui/homestuck.js" />
+      <Helmet>
+        <link rel="stylesheet" type="text/css" href="/static/manifest-ui/manifestui.css" />
+        <script src="/static/manifest-ui/homestuck.js" />
+      </Helmet>
       <div className="pos-r">
         <HomestuckHeader panel={panel} title={title} />
         <div className="row bg-hs-gray bg-light-gray--md pad-b-md pad-b-lg--md pos-r">
           <div className="mar-x-auto disp-bl bg-hs-gray pad-t-lg" style={{ maxWidth: "650px" }}>
-            {log}
+            {/* {log} */}
             <HomestuckNav links={links} />
             <HomestuckGameNav />
           </div>
