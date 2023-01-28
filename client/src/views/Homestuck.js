@@ -24,7 +24,7 @@ export default function Homestuck({ overrideId }) {
     }
     let localId = id || overrideId;
     //console.log("fetching!", localId);
-    let req = fetch(`http://localhost:5000/api/view/${localId}`, { method: "GET" });
+    let req = fetch(`/api/view/${localId}`, { method: "GET" });
     req
       .then((res) => res.json())
       .then((json) => {

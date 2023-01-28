@@ -6,7 +6,7 @@ export default function HomestuckHeader({ panel, title }) {
           {title}
         </h2>
         <div className="pad-t-md">
-          <img style={{ width: "100%" }} src={`http://localhost:5000/static/img/${panel}`} srcSet={`http://localhost:5000/static/img/${panel} 2x`} alt="" />
+          <img style={{ width: "100%" }} src={`/static/img/${panel}`} srcSet={`/static/img/${panel} 2x`} alt="" />
         </div>
       </div>
     </div>
