@@ -3,6 +3,7 @@ var multer = require("multer");
 var path = require("path");
 var mime = require("mime-types");
 var fs = require("fs");
+var SHA256 = require("crypto-js/sha256");
 var router = express.Router();
 
 // Import nanoid
@@ -31,6 +32,7 @@ const upload = multer({ storage: storage });
 //   id*      : Unique ID for the page
 //   title*   : Title of the page
 //   password : Password for editing later
+//   salt     : Password salt
 //   links    : Array of links
 //   log      : Log
 //   panel    : Image
@@ -38,16 +40,30 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
   console.log("REQUEST:", req.body);
   //console.log("UPLOAD:", req.file);
   // create page
+  let salt = nanoid(21);
   const page = new Page({
     id: req.body.id != null ? String(req.body.id) : nanoid(9),
     title: req.body.title,
-    password: req.body.password,
+    password: req.body.password ? SHA256(req.body.password + salt) : null,
+    salt: salt,
     log: req.body.lines,
     links: req.body.links != null ? req.body.links : "[]",
     panel: { uri: req.file.filename, kind: req.file.mimetype },
   });
   await page.save();
   res.send({ id: page.id });
+});
+
+// POST /auth : Check that password exists and return token
+router.post("/auth", async function (req, res, next) {
+  const page = await Page.findOne({ id: req.body.id }).exec();
+  if (!page.password) {
+    res.send({ error: "The requested pesterlog cannot be edited." });
+  } else if (page.password === SHA256(req.body.password + page.salt)) {
+    res.send({ authToken: req.body.password });
+  } else {
+    res.send({ error: "Could not log into pesterlog." });
+  }
 });
 
 // POST /edit : Edit already made page
