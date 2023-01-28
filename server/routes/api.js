@@ -70,4 +70,27 @@ router.get("/view/:id", async function (req, res, next) {
   }
 });
 
+// GET /list/:page : List pages
+router.get("/list/:page", async function (req, res, next) {
+  let page = req.params.page;
+  let limit = 15;
+  res.set({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  });
+  Page.find()
+    .select("id title")
+    .limit(limit)
+    .skip(limit * (page - 1))
+    .sort({ name: "asc" })
+    .exec((err, logs) => {
+      Page.count().exec((err, count) => {
+        let editedLogs = logs.map((log) => {
+          return { id: log.id, title: log.title };
+        });
+        res.send({ page: page, count: Math.ceil(count / limit), logs: editedLogs });
+      });
+    });
+});
+
 module.exports = router;
