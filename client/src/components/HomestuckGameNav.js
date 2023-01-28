@@ -1,4 +1,4 @@
-export default function HomestuckGameNav() {
+export default function HomestuckGameNav({ id }) {
   return (
     <footer id="story-footer" role="banner">
       <div id="story_footer_container" className="o_story-page-footer flex pad-t-0 pad-x-0 flex-justify">
@@ -9,6 +9,9 @@ export default function HomestuckGameNav() {
             </li>
             <li className="o_game-nav-item">
               <a href="/list">View All</a>
+            </li>
+            <li className="o_game-nav-item">
+              <a href={`/auth/${id}`}>Edit Log</a>
             </li>
           </ul>
         </div>

@@ -51,7 +51,7 @@ export default function Homestuck({ overrideId }) {
           <div className="mar-x-auto disp-bl bg-hs-gray pad-t-lg" style={{ maxWidth: "650px" }}>
             <HomestuckLog lines={log} />
             <HomestuckNav links={links} />
-            <HomestuckGameNav />
+            <HomestuckGameNav id={id || overrideId} />
           </div>
         </div>
       </div>
