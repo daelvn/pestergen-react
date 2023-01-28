@@ -30,7 +30,7 @@ export default function Create() {
 
   function submitForm() {
     setFormData({ ...formData, invalid: false });
-    console.log(formData);
+    //console.log(formData);
     // check that all mandatory attributes exist and add defaults
     const CHECK_ATTRIBUTES = ["title", "id", "panel", "links", "lines", "password"];
     for (let attribute of CHECK_ATTRIBUTES) {
