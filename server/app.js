@@ -10,6 +10,10 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var apiRouter = require("./routes/api");
 
+// Init db
+var { connect } = require("./controllers");
+connect();
+
 var app = express();
 
 app.use(logger("dev"));
