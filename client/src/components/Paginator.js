@@ -1,12 +1,27 @@
 import { Button } from "@mui/joy";
 import { Stack } from "@mui/system";
+import reactCSS from "reactcss";
 
 export default function Paginator({ total, page, setPage }) {
-  let buttons = [...Array(total).keys()].map((i) => {
-    return <Button onClick={() => setPage(i + 1)}>{i + 1}</Button>;
+  const styles = reactCSS({
+    default: {
+      button: {},
+      stack: {
+        justifyContent: "space-between",
+      },
+    },
+  });
+  let buttons = [page - 1, page, page + 1].map((i) => {
+    if (i < 1) return null;
+    if (i > total) return null;
+    return (
+      <Button variant="outlined" onClick={() => setPage(i)}>
+        {i}
+      </Button>
+    );
   });
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={2} sx={styles.stack}>
       <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
         &lt;
       </Button>

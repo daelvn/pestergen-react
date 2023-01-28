@@ -34,8 +34,8 @@ export default function PageList() {
       <CssBaseline />
       <Sheet
         sx={{
-          //width: 300,
-          mx: 4, // margin left & right
+          width: 300,
+          mx: "auto", // margin left & right
           my: 4, // margin top & botom
           py: 3, // padding top & bottom
           px: 2, // padding left & right
