@@ -15,7 +15,7 @@ export default function Paginator({ total, page, setPage }) {
     if (i < 1) return null;
     if (i > total) return null;
     return (
-      <Button variant="outlined" onClick={() => setPage(i)}>
+      <Button key={i} variant="outlined" onClick={() => setPage(i)}>
         {i}
       </Button>
     );
