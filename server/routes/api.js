@@ -4,6 +4,7 @@ var path = require("path");
 var mime = require("mime-types");
 var fs = require("fs");
 var SHA256 = require("crypto-js/sha256");
+var enc = require("crypto-js/enc-hex");
 var router = express.Router();
 
 // Import nanoid
@@ -44,7 +45,7 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
   const page = new Page({
     id: req.body.id != null ? String(req.body.id) : nanoid(9),
     title: req.body.title,
-    password: req.body.password ? SHA256(req.body.password + salt) : null,
+    password: req.body.password ? SHA256(req.body.password + salt).toString(enc) : null,
     salt: salt,
     log: req.body.lines,
     links: req.body.links != null ? req.body.links : "[]",
@@ -57,11 +58,15 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
 // POST /auth : Check that password exists and return token
 router.post("/auth", async function (req, res, next) {
   const page = await Page.findOne({ id: req.body.id }).exec();
-  if (!page.password) {
+  //console.log("finding page", req.body, page);
+  if (!page) {
+    res.send({ error: "Pesterlog could not be found." });
+  } else if (!page.password) {
     res.send({ error: "The requested pesterlog cannot be edited." });
-  } else if (page.password === SHA256(req.body.password + page.salt)) {
+  } else if (page.password === SHA256(req.body.password + page.salt).toString(enc)) {
     res.send({ authToken: req.body.password });
   } else {
+    //console.log("Reset password:", SHA256(req.body.password + page.salt).toString(enc));
     res.send({ error: "Could not log into pesterlog." });
   }
 });
@@ -69,20 +74,34 @@ router.post("/auth", async function (req, res, next) {
 // POST /edit : Edit already made page
 router.post("/edit", upload.single("panel"), async function (req, res, next) {
   console.log("EDIT", req.body);
-  const page = Page.findOneAndUpdate(
-    { id: req.body.id },
-    {
-      title: req.body.title,
-      log: req.body.lines,
-      links: req.body.links != null ? req.body.links : "[]",
-      panel: { uri: req.file.filename, kind: req.file.mimetype },
-    }
-  );
+  const page = await Page.findOne({ id: req.body.id }).exec();
+  let authed = false;
+  // check password
   if (!page) {
-    res.send({ error: "Could not edit file!" });
+    res.send({ error: "Pesterlog could not be found." });
+    return;
+  } else if (!page.password) {
+    res.send({ error: "The requested pesterlog cannot be edited." });
+    return;
+  } else if (page.password === SHA256(req.body.password + page.salt).toString(enc)) {
+    authed = true;
   } else {
-    res.send({ id: req.body.id });
+    //console.log("Reset password:", SHA256(req.body.password + page.salt).toString(enc));
+    res.send({ error: "Could not log into pesterlog." });
+    return;
   }
+  if (!authed) {
+    res.send({ error: "Could not edit file!" });
+    return;
+  }
+  //
+  page.title = req.body.title;
+  page.log = req.body.lines;
+  page.links = req.body.links;
+  page.panel = { uri: req.file.filename, kind: req.file.mimetype };
+  page.save();
+
+  res.send({ id: req.body.id });
 });
 
 // GET /view/:id : View a page from the database
