@@ -3,17 +3,20 @@ import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Typography from "@mui/joy/Typography";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Input, Button } from "@mui/joy";
 
-export default function EditCheck() {
-  const [password, setPassword] = useState();
+export default function Auth() {
+  const [password, setPassword] = useState("");
   const { id } = useParams();
 
   async function checkPassword(id, pass) {
-    let checked = fetch("http://localhost:5000/api/auth", {
+    let checked = fetch("/api/auth", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         id: id,
         password: pass,
@@ -24,10 +27,10 @@ export default function EditCheck() {
       .then((json) => {
         if (json.error) {
           window.alert(json.error);
-          resolve(false);
+          return false;
         } else {
           Cookies.set("token", json.authToken);
-          resolve(true);
+          return true;
         }
       });
   }
