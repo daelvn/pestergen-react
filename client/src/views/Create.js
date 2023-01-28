@@ -33,7 +33,8 @@ export default function Create() {
     console.log(formData);
     // check that all mandatory attributes exist and add defaults
     const CHECK_ATTRIBUTES = ["title", "id", "panel", "links", "lines", "password"];
-    for (attribute of CHECK_ATTRIBUTES) {
+    for (let attribute of CHECK_ATTRIBUTES) {
+      //console.log(attribute, typeof formData[attribute]);
       switch (attribute) {
         case "title":
         case "panel":
@@ -52,15 +53,18 @@ export default function Create() {
             setFormData({ ...formData, lines: [] });
           }
           break;
+        default:
+          break;
       }
     }
     // create form data object
+
     let formDataObject = new FormData();
     Object.keys(formData).forEach((key) => {
-      if (key !== "panel") {
-        formDataObject.append(key, formData[key]);
-      } else if (key === "lines" || key === "links") {
+      if (key === "lines" || key === "links") {
         formDataObject.append(key, JSON.stringify(formData[key]));
+      } else if (key !== "panel") {
+        formDataObject.append(key, formData[key]);
       }
     });
     formDataObject.append("panel", formData.panel, `${encodeURI(formData.id)}+${encodeURI(formData.title)}`);
