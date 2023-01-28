@@ -81,6 +81,7 @@ export default function Create() {
           window.alert(`Upload error! ${json.error}`);
         } else {
           // TODO redirect to page
+          window.location.href = `/view/${json.id}`;
         }
       });
   }
