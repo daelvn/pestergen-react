@@ -10,6 +10,7 @@ const { nanoid } = require("nanoid");
 
 // Import controllers
 const { Page } = require("../controllers/Page");
+const e = require("express");
 
 // Create multer uploader
 const storage = multer.diskStorage({
@@ -49,14 +50,29 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
   res.send({ id: page.id });
 });
 
+// POST /edit : Edit already made page
+router.post("/edit", upload.single("panel"), async function (req, res, next) {
+  console.log("EDIT", req.body);
+  const page = Page.findOneAndUpdate(
+    { id: req.body.id },
+    {
+      title: req.body.title,
+      log: req.body.lines,
+      links: req.body.links != null ? req.body.links : "[]",
+      panel: { uri: req.file.filename, kind: req.file.mimetype },
+    }
+  );
+  if (!page) {
+    res.send({ error: "Could not edit file!" });
+  } else {
+    res.send({ id: req.body.id });
+  }
+});
+
 // GET /view/:id : View a page from the database
 router.get("/view/:id", async function (req, res, next) {
   let id = req.params.id;
   let page = await Page.findOne({ id }).exec();
-  res.set({
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  });
   if (!page) {
     res.send({ error: "Page not found" });
   } else {
@@ -75,10 +91,6 @@ router.get("/view/:id", async function (req, res, next) {
 router.get("/list/:page", async function (req, res, next) {
   let page = req.params.page;
   let limit = 15;
-  res.set({
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  });
   Page.find()
     .select("id title")
     .limit(limit)
