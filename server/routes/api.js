@@ -1,21 +1,13 @@
-//var express = require("express");
-import * as express from "express";
-//var mime = require("mime-types");
-import * as mime from "mime-types";
-// var path = require("path");
-// var fs = require("fs");
-// var multer = require("multer");
-import * as path from "path";
-import * as fs from "fs";
-import * as multer from "multer";
+var express = require("express");
+var multer = require("multer");
 var router = express.Router();
 
 // Import nanoid
-import { nanoid } from "nanoid";
+const { nanoid } = require("nanoid");
 
 // Import controllers
-import { initialSetup } from "../controllers/index.js";
-import Page from "../controllers/Page.js";
+const { initialSetup } = require("../controllers");
+const { Page } = require("../controllers/Page");
 
 // Create multer uploader
 const storage = multer.diskStorage({
