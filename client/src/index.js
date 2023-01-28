@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 
 // Import Views
 import Homestuck from "./views/Homestuck";
 import Create from "./views/Create";
 import NotFound from "./views/NotFound";
+import PageList from "./views/PageList";
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/view/:id" element={<Homestuck />} />
       <Route path="/create" element={<Create />} />
       <Route path="/404" element={<NotFound />} />
+      <Route path="/list" element={<PageList />} />
     </Routes>
   );
 }
