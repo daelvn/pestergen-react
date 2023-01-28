@@ -12,7 +12,7 @@ import PageList from "./views/PageList";
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Homestuck id={"home"} />} />
+      <Route path="/" element={<Homestuck overrideId={"home"} />} />
       <Route path="/view/:id" element={<Homestuck />} />
       <Route path="/create" element={<Create />} />
       <Route path="/404" element={<NotFound />} />
