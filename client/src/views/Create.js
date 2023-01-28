@@ -14,6 +14,7 @@ import reactCSS from "reactcss";
 
 import Panel from "../components/Panel";
 import Log from "../components/Log";
+import Links from "../components/Links";
 
 export default function Create() {
   const [formData, setFormData] = useState({ invalid: true });
@@ -35,7 +36,7 @@ export default function Create() {
     Object.keys(formData).forEach((key) => {
       if (key !== "panel") {
         formDataObject.append(key, formData[key]);
-      } else if (key === "lines") {
+      } else if (key === "lines" || key === "links") {
         formDataObject.append(key, JSON.stringify(formData[key]));
       }
     });
@@ -46,7 +47,15 @@ export default function Create() {
       body: formDataObject,
     });
     // process the response
-    request.then((res) => res.json()).then((json) => console.log(json));
+    request
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          window.alert(`Upload error! ${json.error}`);
+        } else {
+          // TODO redirect to page
+        }
+      });
   }
 
   return (
@@ -102,6 +111,10 @@ export default function Create() {
                       placeholder="Set a password if you want to edit this later."
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Links</FormLabel>
+                    <Links formData={formData} setFormData={setFormData} />
                   </FormControl>
                   <FormControl>
                     <Button sx={{ my: 2 }} onClick={submitForm}>
