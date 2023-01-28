@@ -12,24 +12,30 @@ export default function EditCheck() {
   const { id } = useParams();
 
   async function checkPassword(id, pass) {
-    let checked = fetch("http://localhost:5000/api/pass", {
+    let checked = fetch("http://localhost:5000/api/auth", {
       method: "POST",
       body: JSON.stringify({
         id: id,
         password: pass,
       }),
     });
-    checked
+    return checked
       .then((res) => res.json())
       .then((json) => {
         if (json.error) {
           window.alert(json.error);
+          resolve(false);
+        } else {
+          Cookies.set("token", json.authToken);
+          resolve(true);
         }
       });
   }
 
   function handleClick() {
-    checkPassword(id, password);
+    checkPassword(id, password).then((success) => {
+      if (success) window.location.href = `/edit/${id}`;
+    });
   }
 
   return (
