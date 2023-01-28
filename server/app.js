@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-//app.use("/", indexRouter);
+app.use("/", indexRouter);
 app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
@@ -36,7 +36,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.send(`${err.message} ${res.locals.error}`);
+  res.send({ error: `${err.message} ${res.locals.error}` });
 });
 
 module.exports = app;
