@@ -1,24 +1,33 @@
-var express = require("express");
-var multer = require("multer");
+//var express = require("express");
+import * as express from "express";
+//var mime = require("mime-types");
+import * as mime from "mime-types";
+// var path = require("path");
+// var fs = require("fs");
+// var multer = require("multer");
+import * as path from "path";
+import * as fs from "fs";
+import * as multer from "multer";
 var router = express.Router();
 
 // Import nanoid
-const { nanoid } = require("nanoid");
+import { nanoid } from "nanoid";
 
 // Import controllers
-const { initialSetup } = require("../controllers");
-const { Page } = require("../controllers/Page");
+import { initialSetup } from "../controllers/index.js";
+import Page from "../controllers/Page.js";
 
 // Create multer uploader
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // TODO: make sure this is the correct place
-    cb(null, "../static/img");
+    cb(null, path.join(__dirname, "/../public/static/img/"));
   },
   filename: function (req, file, cb) {
-    // TODO: make sure filenames dont conflict
-    console.log(req);
-    cb(null, "example.png");
+    let filename = `${req.body.id}.${mime.extension(file.mimetype)}`;
+    if (fs.existsSync(path.join(__dirname, `/../public/static/img/${filename}`))) {
+      filename = `${req.body.id}.${Date.now()}.${mime.extension(file.mimetype)}`;
+    }
+    cb(null, filename);
   },
 });
 const upload = multer({ storage: storage });
@@ -37,20 +46,22 @@ router.post("/init", function (req, res, next) {
 //   id*      : Unique ID for the page
 //   title*   : Title of the page
 //   password : Password for editing later
-//   next     : Array of links
+//   links    : Array of links
+//   log      : Log
 //   panel    : Image
 router.post("/create", upload.single("panel"), function (req, res, next) {
-  console.log("UPLOAD:");
-  console.log(req.file);
+  //console.log("REQUEST:", req);
+  //console.log("UPLOAD:", req.file);
   // TODO create panel
-  // const page = new Page({
-  //   id: req.body.id != null ? String(req.body.id) : nanoid(9),
-  //   title: req.body.title,
-  //   password: req.body.password,
-  //   next: req.body.next,
-  //   panel: null
-  // });
-  res.send({ id: "1" });
+  const page = new Page({
+    id: req.body.id != null ? String(req.body.id) : nanoid(9),
+    title: req.body.title,
+    password: req.body.password,
+    log: JSON.parse(req.body.lines),
+    links: req.body.links,
+    panel: req.file.filename,
+  });
+  res.send({ id: page.id });
 });
 
 module.exports = router;
