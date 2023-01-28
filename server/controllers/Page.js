@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const controller = require("./index");
 //import { nanoid } from "nanoid";
-const Schema = mongoose.Schema;
+const Schema = controller.mongoose.Schema;
 
 // Page : mongoose Schema
 // --------------------
@@ -41,13 +41,13 @@ const PageSchema = new Schema({
   password: String,
   // log : String
   log: String,
-  // links : [{text: String, id: String}]
-  links: [{ text: String, id: String }],
+  // links : String
+  links: String,
   // panel : {uri: String, kind: String}
   panel: { uri: { type: String }, kind: { type: String } },
 });
 
-const Page = mongoose.model("Page", PageSchema);
+const Page = controller.mongoose.model("Page", PageSchema);
 
 module.exports = {
   PageSchema: PageSchema,
