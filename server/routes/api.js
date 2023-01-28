@@ -21,8 +21,9 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     let filename = `${req.body.id}.${mime.extension(file.mimetype)}`;
-    if (fs.existsSync(path.join(__dirname, `/../public/static/img/${filename}`))) {
-      filename = `${req.body.id}.${Date.now()}.${mime.extension(file.mimetype)}`;
+    let filepath = path.join(__dirname, `/../public/static/img/${filename}`);
+    if (fs.existsSync(filepath)) {
+      fs.unlinkSync(filepath);
     }
     cb(null, filename);
   },
