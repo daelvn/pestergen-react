@@ -1,5 +1,8 @@
 var express = require("express");
 var multer = require("multer");
+var path = require("path");
+var mime = require("mime-types");
+var fs = require("fs");
 var router = express.Router();
 
 // Import nanoid
@@ -42,7 +45,7 @@ router.post("/init", function (req, res, next) {
 //   log      : Log
 //   panel    : Image
 router.post("/create", upload.single("panel"), function (req, res, next) {
-  //console.log("REQUEST:", req);
+  console.log("REQUEST:", req.body);
   //console.log("UPLOAD:", req.file);
   // TODO create panel
   const page = new Page({
@@ -50,7 +53,7 @@ router.post("/create", upload.single("panel"), function (req, res, next) {
     title: req.body.title,
     password: req.body.password,
     log: JSON.parse(req.body.lines),
-    links: req.body.links,
+    links: JSON.parse(req.body.links),
     panel: req.file.filename,
   });
   res.send({ id: page.id });
