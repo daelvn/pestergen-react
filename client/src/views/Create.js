@@ -31,6 +31,29 @@ export default function Create() {
   function submitForm() {
     setFormData({ ...formData, invalid: false });
     console.log(formData);
+    // check that all mandatory attributes exist and add defaults
+    const CHECK_ATTRIBUTES = ["title", "id", "panel", "links", "lines", "password"];
+    for (attribute of CHECK_ATTRIBUTES) {
+      switch (attribute) {
+        case "title":
+        case "panel":
+          if (!formData[attribute]) {
+            window.alert("You can't upload a panel without a title or image!");
+            return;
+          }
+          break;
+        case "links":
+          if (!formData.links) {
+            setFormData({ ...formData, links: [] });
+          }
+          break;
+        case "lines":
+          if (!formData.lines) {
+            setFormData({ ...formData, lines: [] });
+          }
+          break;
+      }
+    }
     // create form data object
     let formDataObject = new FormData();
     Object.keys(formData).forEach((key) => {
