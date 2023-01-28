@@ -32,13 +32,23 @@ function LogHolder({ lines }) {
         fontFamily: "Courier New, monospace",
         fontWeight: "bold",
       },
+      narrator: {
+        fontFamily: "Courier New, monospace",
+        fontWeight: "bold",
+        textAlign: "center",
+      },
     },
   });
 
   const spans = lines.map((line, index) => {
     return (
-      <div style={{ color: rgbToHex(line.color.r, line.color.g, line.color.b) }} key={index}>
-        <span style={styles.line}>{line.interventionType === "character" ? `${line.intervention}: ${line.line}` : line.line}</span>
+      <div
+        style={{ color: rgbToHex(line.color.r, line.color.g, line.color.b), textAlign: line.interventionType === "narrator" ? "center" : "none" }}
+        key={index}
+      >
+        <span style={line.interventionType === "narrator" ? styles.narrator : styles.line}>
+          {line.interventionType === "character" ? `${line.intervention}: ${line.line}` : line.line}
+        </span>
         <br />
       </div>
     );
