@@ -1,9 +1,13 @@
 import { Input, ListItem, ListItemContent, Button, List } from "@mui/joy";
 import { useState } from "react";
 
-export default function Links({ formData, setFormData }) {
-  const [links, setLinks] = useState([]);
+export default function Links({ oldLog, formData, setFormData, links, setLinks }) {
+  //const [fetched, setFetched] = useState(false);
+  const [localLinks, localSetLinks] = useState([]);
   const [link, setLink] = useState([]);
+  if (!links) {
+    [links, setLinks] = [localLinks, localSetLinks];
+  }
 
   function handleAdd() {
     setLinks(links.concat([link]));
@@ -24,6 +28,13 @@ export default function Links({ formData, setFormData }) {
       setFormData({ ...formData, links: linksCopy });
     };
   }
+
+  // if (oldLog && !fetched) {
+  //   let newLinks = JSON.parse(oldLog.links).map((link) => link.id);
+  //   setLinks(newLinks); // remember that links come coupled from /api/view
+  //   setFormData({ ...formData, links: newLinks });
+  //   setFetched(true);
+  // }
 
   const linkElements = links.map((linkElement, index) => {
     return (

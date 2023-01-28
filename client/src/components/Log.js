@@ -63,8 +63,12 @@ function LogHolder({ lines }) {
   return holder;
 }
 
-export default function Log({ formData, setFormData }) {
-  const [lines, setLines] = useState([]);
+export default function Log({ oldLog, formData, setFormData, lines, setLines }) {
+  const [fetched, setFetched] = useState(false);
+  const [localLines, localSetLines] = useState([]);
+  if (!setLines) {
+    [lines, setLines] = [localLines, localSetLines];
+  }
 
   function handleAdd(line) {
     setLines(lines.concat([line]));
@@ -85,6 +89,11 @@ export default function Log({ formData, setFormData }) {
     setLines(lns);
     setFormData({ ...formData, lines: lns });
   }
+
+  // if (oldLog && !fetched) {
+  //   handleSetLines(JSON.parse(oldLog.lines));
+  //   setFetched(true);
+  // }
 
   return (
     <div>

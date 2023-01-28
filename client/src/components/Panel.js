@@ -10,9 +10,13 @@ import "../index.css";
 import { useState } from "react";
 import reactCSS from "reactcss";
 
-export default function Panel({ formData, setFormData }) {
-  const [file, setFile] = useState("/static/img/panel.png");
+export default function Panel({ oldLog, formData, setFormData, file, setFile }) {
+  //const [fetched, setFetched] = useState(false);
+  const [localFile, localSetFile] = useState("/static/img/panel.png");
   const [hover, setHover] = useState(false);
+  if (!file) {
+    [file, setFile] = [localFile, localSetFile];
+  }
 
   const styles = reactCSS({
     default: {
@@ -38,6 +42,12 @@ export default function Panel({ formData, setFormData }) {
     setFile(URL.createObjectURL(event.target.files[0]));
     setFormData({ ...formData, panel: event.target.files[0] });
   }
+
+  // if (oldLog && !fetched) {
+  //   setFile(oldLog.panel);
+  //   setFormData({ ...formData, panel: oldLog.panel });
+  //   setFetched(true);
+  // }
 
   return (
     <div style={styles.panel}>
