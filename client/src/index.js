@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // Import Views
 import Homestuck from "./views/Homestuck";
@@ -22,8 +23,10 @@ function Router() {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Router />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </HelmetProvider>
   </React.StrictMode>
 );
