@@ -42,7 +42,7 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
     title: req.body.title,
     password: req.body.password,
     log: req.body.lines,
-    links: req.body.links,
+    links: req.body.links != null ? req.body.links : "[]",
     panel: { uri: req.file.filename, kind: req.file.mimetype },
   });
   await page.save();
@@ -62,6 +62,7 @@ router.get("/view/:id", async function (req, res, next) {
   } else {
     // couple links with titles before sending away
     let links = [];
+    console.log("Found page?", page);
     for (let link of JSON.parse(page._doc.links)) {
       let found = await Page.findOne({ id: link }).exec();
       links.push(found ? { id: link, title: found._doc.title } : { id: link, title: `==> ? (${link})` });
