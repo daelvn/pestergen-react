@@ -9,6 +9,8 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Grid from "@mui/joy/Grid";
 
+import Cookies from "js-cookie";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import reactCSS from "reactcss";
@@ -46,7 +48,7 @@ export default function Edit({ password }) {
     // check that all mandatory attributes exist and add defaults
     const CHECK_ATTRIBUTES = ["title", "id", "panel", "links", "lines", "password"];
     for (let attribute of CHECK_ATTRIBUTES) {
-      //console.log(attribute, typeof formData[attribute]);
+      console.log("attr", attribute, typeof formData[attribute]);
       switch (attribute) {
         case "title":
         case "panel":
@@ -81,7 +83,7 @@ export default function Edit({ password }) {
     });
     formDataObject.append("panel", formData.panel, `${encodeURI(formData.id)}+${encodeURI(formData.title)}`);
     // request the API
-    let request = fetch("https://localhost:5000/api/edit", {
+    let request = fetch("/api/edit", {
       method: "post",
       body: formDataObject,
     });
@@ -101,7 +103,7 @@ export default function Edit({ password }) {
   // fetch original data to edit
   useEffect(() => {
     if (fetched) return;
-    let req = fetch(`http://localhost:5000/api/view/${id}`, { method: "GET" });
+    let req = fetch(`/api/view/${id}`, { method: "GET" });
     req
       .then((res) => res.json())
       .then((json) => {
@@ -110,28 +112,25 @@ export default function Edit({ password }) {
         }
         console.log("fetched!", json);
         setOldLog(json);
-        setFormData({ ...formData, id: json.id, title: json.title, password: password });
         setTitle(json.title);
         setInputId(json.id);
-        setInputPassword(password || "");
+        setInputPassword(Cookies.get("token"));
         // change lines
         let fetchedLines = JSON.parse(json.log || "[]");
         setLines(fetchedLines);
-        setFormData({ ...formData, lines: fetchedLines });
         // change links
         let fetchedLinks = json.links.map((link) => link.id);
         console.log("fetchedLinks", fetchedLinks);
         setLinks(fetchedLinks);
-        setFormData(fetchedLinks);
         // change panel
-        let fetchedImage = fetch(`http://localhost:5000/static/img/${json.panel.uri}`);
+        let fetchedImage = fetch(`/static/img/${json.panel.uri}`);
         fetchedImage
           .then((res) => res.blob())
           .then((blob) => {
             const file = new File([blob], json.panel.uri); //, { type: blob.type }
             console.log("reading as blob!", file);
             setFile(URL.createObjectURL(file));
-            setFormData({ ...formData, panel: file });
+            setFormData({ id: json.id, title: json.title, password: Cookies.get("token"), lines: fetchedLines, links: fetchedLinks, panel: file });
           });
 
         // done
@@ -200,7 +199,7 @@ export default function Edit({ password }) {
                   </FormControl>
                   <FormControl>
                     <FormLabel>Password</FormLabel>
-                    <Input name="password" type="password" value={password} disabled={true} placeholder="Set a password if you want to edit this later." />
+                    <Input name="password" type="password" value={inputPassword} disabled={true} placeholder="Set a password if you want to edit this later." />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Links</FormLabel>
