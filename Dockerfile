@@ -16,12 +16,15 @@ RUN npm install
 
 # Copy source code
 WORKDIR /usr/src/app
-COPY client/* ./client/
-COPY server/* ./server/
+COPY . .
 
 # Build client
 WORKDIR /usr/src/app/client
 RUN npm run build
+
+# Move client into server
+WORKDIR /usr/src/app
+RUN cp -r client/build/ /usr/src/app/server/public
 
 # Reset
 WORKDIR /usr/src/app
