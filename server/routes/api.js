@@ -20,6 +20,12 @@ const s3 = new aws.S3({
   endpoint: spacesEndpoint,
 });
 
+// global id generator
+let globalId = nanoid(9);
+function refreshId() {
+  globalId = nanoid(9);
+}
+
 // Create multer uploader
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -41,8 +47,9 @@ const upload = multer({
     bucket: "pestergen",
     acl: "public-read",
     key: function (req, file, cb) {
-      //console.log(file);
-      cb(null, `${req.body.id}.${mime.extension(file.mimetype)}`);
+      let id = req.body.id || globalId;
+      //console.log("multer gets", id);
+      cb(null, `${id}.${mime.extension(file.mimetype)}`);
     },
   }),
 });
@@ -57,11 +64,11 @@ const upload = multer({
 //   panel    : Image
 router.post("/create", upload.single("panel"), async function (req, res, next) {
   //console.log("REQUEST:", req.body);
-  //console.log("UPLOAD:", req.file);
+  console.log("UPLOAD:", req.file);
   // create page
   let salt = nanoid(21);
   const page = new Page({
-    id: req.body.id != null ? String(req.body.id) : nanoid(9),
+    id: req.body.id || globalId,
     title: req.body.title,
     password: req.body.password ? SHA256(req.body.password + salt).toString(enc) : null,
     salt: salt,
@@ -69,6 +76,7 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
     links: req.body.links != null ? req.body.links : "[]",
     panel: { uri: req.file.key, kind: req.file.mimetype },
   });
+  refreshId();
   await page.save();
   res.send({ id: page.id });
 });
