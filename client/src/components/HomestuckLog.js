@@ -16,7 +16,7 @@ export default function HomestuckLog({ lines }) {
   const styles = reactCSS({
     default: {
       holder: {
-        padding: "5%",
+        padding: "1%",
       },
       line: {
         fontFamily: "Courier New, monospace",
@@ -86,7 +86,7 @@ export default function HomestuckLog({ lines }) {
                 setOpenLogs({ ...openLogs, [i]: !openLogs[i] });
               }}
             >
-              Hide pesterlog
+              {openLogs[i] ? "Hide" : "Show"} pesterlog
             </button>
             {openLogs[i] ? <div style={{ padding: "5%" }}>{dialogue}</div> : null}
           </div>
