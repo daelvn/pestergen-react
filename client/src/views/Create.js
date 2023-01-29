@@ -110,13 +110,13 @@ export default function Create() {
           </Typography>
           <form encType="mutlipart/form-data">
             <Grid container spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
-              <Grid xs={6}>
+              <Grid sm={6} xs={12}>
                 <Panel formData={formData} setFormData={setFormData} />
               </Grid>
-              <Grid xs={6}>
+              <Grid sm={6} xs={12}>
                 <Log formData={formData} setFormData={setFormData} />
               </Grid>
-              <Grid xs={6}>
+              <Grid sm={6} xs={12}>
                 <div style={styles.inputs}>
                   <FormControl>
                     <FormLabel>Title</FormLabel>

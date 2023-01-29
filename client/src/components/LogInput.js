@@ -41,13 +41,13 @@ export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast,
 
   return (
     <Grid container spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
-      <Grid xs={2}>
+      <Grid sm={2} xs={12}>
         <LogColorPicker name="color" handleChangeParent={handleChange} />
       </Grid>
-      <Grid xs={7}>
+      <Grid sm={7} xs={12}>
         <Input name="intervention" id="log-input-intervention" placeholder="Character/Handle" onChange={handleChange} />
       </Grid>
-      <Grid xs={3}>
+      <Grid sm={3} xs={12}>
         <Select name="interventionType" id="log-input-intervention-type" placeholder="Type..." defaultValue="character" onChange={handleChange}>
           <Option value="character">Character</Option>
           <Option value="narrator">Narrator</Option>
@@ -62,20 +62,20 @@ export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast,
           onChange={handleChange}
         />
       </Grid>
-      <Grid xs={6}>
+      <Grid sm={6} xs={12}>
         <Button color="danger" sx={{ width: "100%" }} onClick={handleDeleteLast}>
           Delete last line
         </Button>
       </Grid>
-      <Grid xs={6}>
+      <Grid sm={6} xs={12}>
         <Button color="danger" sx={{ width: "100%" }} onClick={handleDeleteAll}>
           Delete everything
         </Button>
       </Grid>
-      <Grid xs={6}>
+      <Grid sm={6} xs={12}>
         <LogExportModal lines={lines} />
       </Grid>
-      <Grid xs={6}>
+      <Grid sm={6} xs={12}>
         <LogImportModal setLines={setLines} />
         {/* Do popup with code to put in a file */}
       </Grid>
