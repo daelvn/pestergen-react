@@ -15,7 +15,7 @@ export default function PageList() {
 
   useEffect(() => {
     if (fetched) return;
-    let req = fetch(`http://localhost:5000/api/list/${page}`, { method: "GET" });
+    let req = fetch(`/api/list/${page}`, { method: "GET" });
     req
       .then((res) => res.json())
       .then((json) => {
