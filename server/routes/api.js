@@ -12,23 +12,40 @@ const { nanoid } = require("nanoid");
 
 // Import controllers
 const { Page } = require("../controllers/Page");
-const e = require("express");
+
+// Use AWS
+var aws = require("aws-sdk");
+const spacesEndpoint = new aws.Endpoint("https://nyc3.digitaloceanspaces.com");
+const s3 = new aws.S3({
+  endpoint: spacesEndpoint,
+});
 
 // Create multer uploader
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "/../public/static/img/"));
-  },
-  filename: function (req, file, cb) {
-    let filename = `${req.body.id}.${mime.extension(file.mimetype)}`;
-    let filepath = path.join(__dirname, `/../public/static/img/${filename}`);
-    if (fs.existsSync(filepath)) {
-      fs.unlinkSync(filepath);
-    }
-    cb(null, filename);
-  },
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, path.join(__dirname, "/../public/static/img/"));
+//   },
+//   filename: function (req, file, cb) {
+//     let filename = `${req.body.id}.${mime.extension(file.mimetype)}`;
+//     let filepath = path.join(__dirname, `/../public/static/img/${filename}`);
+//     if (fs.existsSync(filepath)) {
+//       fs.unlinkSync(filepath);
+//     }
+//     cb(null, filename);
+//   },
+// });
+var multerS3 = require("multer-s3");
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "pestergen",
+    acl: "public-read",
+    key: function (req, file, cb) {
+      //console.log(file);
+      cb(null, `${req.body.id}.${mime.extension(file.mimetype)}`);
+    },
+  }),
 });
-const upload = multer({ storage: storage });
 
 // POST /create : Create new page
 //   id*      : Unique ID for the page
@@ -39,7 +56,7 @@ const upload = multer({ storage: storage });
 //   log      : Log
 //   panel    : Image
 router.post("/create", upload.single("panel"), async function (req, res, next) {
-  console.log("REQUEST:", req.body);
+  //console.log("REQUEST:", req.body);
   //console.log("UPLOAD:", req.file);
   // create page
   let salt = nanoid(21);
@@ -50,7 +67,7 @@ router.post("/create", upload.single("panel"), async function (req, res, next) {
     salt: salt,
     log: req.body.lines,
     links: req.body.links != null ? req.body.links : "[]",
-    panel: { uri: req.file.filename, kind: req.file.mimetype },
+    panel: { uri: req.file.key, kind: req.file.mimetype },
   });
   await page.save();
   res.send({ id: page.id });

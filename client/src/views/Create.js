@@ -80,7 +80,6 @@ export default function Create() {
         if (json.error) {
           window.alert(`Upload error! ${json.error}`);
         } else {
-          // TODO redirect to page
           window.location.href = `/view/${json.id}`;
         }
       });

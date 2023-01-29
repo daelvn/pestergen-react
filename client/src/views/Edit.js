@@ -123,7 +123,7 @@ export default function Edit({ password }) {
         console.log("fetchedLinks", fetchedLinks);
         setLinks(fetchedLinks);
         // change panel
-        let fetchedImage = fetch(`/static/img/${json.panel.uri}`);
+        let fetchedImage = fetch(`https://pestergen.nyc3.cdn.digitaloceanspaces.com/${json.panel.uri}`);
         fetchedImage
           .then((res) => res.blob())
           .then((blob) => {
