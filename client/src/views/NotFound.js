@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import "../index.css";
 
 export default function NotFound() {
