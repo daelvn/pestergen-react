@@ -127,7 +127,7 @@ export default function Edit({ password }) {
         let fetchedImage = fetch(`https://pestergen.nyc3.digitaloceanspaces.com/${json.panel.uri}`, {
           method: "GET",
           mode: "cors",
-          headers: { Origin: "pestergen.daelvn.com" },
+          headers: { Origin: window.location.hostname },
         });
         fetchedImage
           .then((res) => {
