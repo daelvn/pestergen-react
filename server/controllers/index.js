@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 // Access URI
 const MONGODB_CREDENTIALS = process.env.MONGODB_CREDENTIALS;
-const MONGODB_URI = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.tbmc2ai.mongodb.net/pestergen?retryWrites=true&w=majority`;
+const MONGODB_CLUSTER = process.env.MONGODB_CLUSTER;
+const MONGODB_URI = `mongodb+srv://${MONGODB_CREDENTIALS}@${MONGODB_CLUSTER}/pestergen?retryWrites=true&w=majority`;
 
 // Deprecation warning for strictQuery
 mongoose.set("strictQuery", false);
