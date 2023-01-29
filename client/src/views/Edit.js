@@ -110,7 +110,7 @@ export default function Edit({ password }) {
         if (json.error) {
           window.location.href = "/404";
         }
-        console.log("fetched!", json);
+        //console.log("fetched!", json);
         setOldLog(json);
         setTitle(json.title);
         setInputId(json.id);
@@ -120,15 +120,23 @@ export default function Edit({ password }) {
         setLines(fetchedLines);
         // change links
         let fetchedLinks = json.links.map((link) => link.id);
-        console.log("fetchedLinks", fetchedLinks);
+        //console.log("fetchedLinks", fetchedLinks);
         setLinks(fetchedLinks);
         // change panel
-        let fetchedImage = fetch(`https://pestergen.nyc3.cdn.digitaloceanspaces.com/${json.panel.uri}`);
+        //console.log("fetching", `https://pestergen.nyc3.digitaloceanspaces.com/${json.panel.uri}`);
+        let fetchedImage = fetch(`https://pestergen.nyc3.digitaloceanspaces.com/${json.panel.uri}`, {
+          method: "GET",
+          mode: "cors",
+          headers: { Origin: "pestergen.daelvn.com" },
+        });
         fetchedImage
-          .then((res) => res.blob())
+          .then((res) => {
+            console.log("response", res);
+            return res.blob();
+          })
           .then((blob) => {
-            const file = new File([blob], json.panel.uri); //, { type: blob.type }
-            console.log("reading as blob!", file);
+            const file = new File([blob], json.panel.uri, { type: json.panel.kind }); //, { type: blob.type }
+            console.log("reading as blob!", json, blob, file);
             setFile(URL.createObjectURL(file));
             setFormData({ id: json.id, title: json.title, password: Cookies.get("token"), lines: fetchedLines, links: fetchedLinks, panel: file });
           });
