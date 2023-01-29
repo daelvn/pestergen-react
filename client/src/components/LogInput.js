@@ -10,6 +10,60 @@ import LogColorPicker from "./LogColorPicker";
 import LogExportModal from "./LogExport";
 import LogImportModal from "./LogImport";
 
+export default function ConfirmDeleteButton({handleDeleteAll}) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <Button
+        variant="outlined"
+        color="danger"
+        onClick={() => setOpen(true)}
+        sx={{ width: "100%" }}
+      >
+        Delete everything
+      </Button>
+      <Modal
+        aria-labelledby="alert-dialog-modal-title"
+        aria-describedby="alert-dialog-modal-description"
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <Typography
+            id="alert-dialog-modal-title"
+            component="h2"
+            level="inherit"
+            fontSize="1.25em"
+            mb="0.25em"
+          >
+            Are you sure?
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          <Typography
+            id="alert-dialog-modal-description"
+            textColor="text.tertiary"
+            mb={3}
+          >
+            Are you sure you want to delete all the lines?
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+            <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDeleteAll();
+              setOpen(false)}
+            }>
+              Delete
+            </Button>
+          </Box>
+        </ModalDialog>
+      </Modal>
+    </>
+  );
+}
+
 function LogInputButton({ handleClick }) {
   return <Button onClick={handleClick}>Insert</Button>;
 }
@@ -63,14 +117,12 @@ export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast,
         />
       </Grid>
       <Grid sm={6} xs={12}>
-        <Button color="danger" sx={{ width: "100%" }} onClick={handleDeleteLast}>
+        <Button variant="outlined" color="danger" sx={{ width: "100%" }} onClick={handleDeleteLast}>
           Delete last line
         </Button>
       </Grid>
       <Grid sm={6} xs={12}>
-        <Button color="danger" sx={{ width: "100%" }} onClick={handleDeleteAll}>
-          Delete everything
-        </Button>
+        <ConfirmDeleteButton handleDeleteAll={handleDeleteAll}/>
       </Grid>
       <Grid sm={6} xs={12}>
         <LogExportModal lines={lines} />
