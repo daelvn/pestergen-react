@@ -44,15 +44,6 @@ export default function Homestuck({ overrideId }) {
       <Helmet>
         <link rel="stylesheet" type="text/css" href="/static/manifest-ui/manifestui.css" />
         <script src="/static/manifest-ui/homestuck.js" />
-        <meta name="description" content="Pastebin, but for pesterlogs!" />
-        <meta content={title} property="og:title" />
-        <meta
-          content="Share Homestuck conversations and panels with your friends! Upload them to this website and share the link, or see other people's creations!"
-          property="og:description"
-        />
-        <meta content="https://pestergen.daelvn.com" property="og:url" />
-        <meta content="https://pestergen.daelvn.com/static/embed.png" property="og:image" />
-        <meta content="#43B581" data-react-helmet="true" name="theme-color" />
 
         <title>{title}</title>
       </Helmet>
