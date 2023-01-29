@@ -124,7 +124,7 @@ router.post("/edit", upload.single("panel"), async function (req, res, next) {
   page.title = req.body.title;
   page.log = req.body.lines;
   page.links = req.body.links;
-  page.panel = { uri: req.file.filename, kind: req.file.mimetype };
+  page.panel = { uri: req.file.key, kind: req.file.mimetype };
   page.save();
 
   res.send({ id: req.body.id });
