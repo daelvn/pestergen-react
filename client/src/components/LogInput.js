@@ -5,56 +5,41 @@ import Button from "@mui/joy/Button";
 import Grid from "@mui/joy/Grid";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
+import { Modal, ModalDialog, Typography, Divider, Box } from "@mui/joy";
 
 import LogColorPicker from "./LogColorPicker";
 import LogExportModal from "./LogExport";
 import LogImportModal from "./LogImport";
 
-export default function ConfirmDeleteButton({handleDeleteAll}) {
-  const [open, setOpen] = React.useState(false);
+function ConfirmDeleteButton({ handleDeleteAll }) {
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="danger"
-        onClick={() => setOpen(true)}
-        sx={{ width: "100%" }}
-      >
+      <Button color="danger" onClick={() => setOpen(true)} sx={{ width: "100%" }}>
         Delete everything
       </Button>
-      <Modal
-        aria-labelledby="alert-dialog-modal-title"
-        aria-describedby="alert-dialog-modal-description"
-        open={open}
-        onClose={() => setOpen(false)}
-      >
+      <Modal aria-labelledby="alert-dialog-modal-title" aria-describedby="alert-dialog-modal-description" open={open} onClose={() => setOpen(false)}>
         <ModalDialog variant="outlined" role="alertdialog">
-          <Typography
-            id="alert-dialog-modal-title"
-            component="h2"
-            level="inherit"
-            fontSize="1.25em"
-            mb="0.25em"
-          >
+          <Typography id="alert-dialog-modal-title" component="h2" level="inherit" fontSize="1.25em" mb="0.25em">
             Are you sure?
           </Typography>
           <Divider sx={{ my: 2 }} />
-          <Typography
-            id="alert-dialog-modal-description"
-            textColor="text.tertiary"
-            mb={3}
-          >
+          <Typography id="alert-dialog-modal-description" textColor="text.tertiary" mb={3}>
             Are you sure you want to delete all the lines?
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+          <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
             <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button variant="solid" color="danger" onClick={() => {
-              handleDeleteAll();
-              setOpen(false)}
-            }>
+            <Button
+              variant="solid"
+              color="danger"
+              onClick={() => {
+                handleDeleteAll();
+                setOpen(false);
+              }}
+            >
               Delete
             </Button>
           </Box>
@@ -122,7 +107,7 @@ export default function LogInput({ lines, setLines, handleAdd, handleDeleteLast,
         </Button>
       </Grid>
       <Grid sm={6} xs={12}>
-        <ConfirmDeleteButton handleDeleteAll={handleDeleteAll}/>
+        <ConfirmDeleteButton handleDeleteAll={handleDeleteAll} />
       </Grid>
       <Grid sm={6} xs={12}>
         <LogExportModal lines={lines} />
